@@ -21,8 +21,7 @@ export class CreateRoomPage {
 
   addCorner()
   {
-    this.room.addNewCorner(Math.round(Math.random()*1000), Math.round(Math.random()*1000));
-    console.log(this.room.getArray());
+    this.room.addNewCorner(Math.round(Math.random()*1000), Math.round(Math.random()*1000), Math.round(Math.random()*1000));
   }
 
 }

@@ -11,13 +11,13 @@ import 'rxjs/add/operator/map';
 export class RoomProvider {
 
   constructor() {
-    console.log('Hello RoomProvider Provider');
+    
   }
   roomCoords = [];
 
-  addNewCorner(x, y)
+  addNewCorner(x, y, z)
   {
-    this.roomCoords.push({x: x,y: y});
+    this.roomCoords.push({x: x,y: y, z: z});
   }
 
   getCoords(index){
