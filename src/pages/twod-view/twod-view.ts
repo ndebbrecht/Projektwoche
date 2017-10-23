@@ -4,6 +4,7 @@ import { Component,
          ViewChild } from '@angular/core';
 import { NavController, Platform } from 'ionic-angular';
 import { CreateRoomPage } from '../../pages/create-room/create-room';
+import { RoomProvider } from '../../providers/room/room';
 
 @Component({
   selector: 'page-twod-view',
@@ -31,16 +32,11 @@ export class TwoDViewPage {
    private _CONTEXT : any;
 
 
-   roomCoords = [];
 
-   addNewCorner(x, y)
-   {
-     roomCoords.push({x: x,y: y});
-   }
 
    height = 0;
    width = 0;
-   constructor(public platform: Platform, public navCtrl: NavController)
+   constructor(public platform: Platform, public navCtrl: NavController, public room: RoomProvider)
    {
      platform.ready().then((readySource) => {
        this._CANVAS = this.canvasEl.nativeElement;
@@ -65,7 +61,7 @@ export class TwoDViewPage {
       this._CANVAS.height 	= this.height;*/
 
       this.initialiseCanvas();
-      if(this.roomCoords.length > 0){
+      if(this.room.getLength() > 0){
         this.drawRoom();
       }
    }
@@ -104,14 +100,13 @@ export class TwoDViewPage {
    {
      this.clearCanvas();
      this._CONTEXT.beginPath();
-     var tmpArray = [100, 200, 300, 100];
 
-     this._CONTEXT.moveTo(this.roomCoords[0].x, this.roomCoords[0].y);
-     for(var i=1; i<this.roomCoords.length; i++)
+     this._CONTEXT.moveTo(this.room.getCoords(0).x, this.room.getCoords(0).y);
+     for(var i=1; i<this.room.getLength(); i++)
      {
-       this._CONTEXT.lineTo(this.roomCoords[i].x, this.roomCoords[i].y);
+       this._CONTEXT.lineTo(this.room.getCoords(i).x, this.room.getCoords(i).y);
      }
-     this._CONTEXT.lineTo(this.roomCoords[0].x, this.roomCoords[0].y);
+     this._CONTEXT.lineTo(this.room.getCoords(0).x, this.room.getCoords(0).y);
      this._CONTEXT.lineWidth   = 1;
      this._CONTEXT.strokeStyle = '#ffffff';
      this._CONTEXT.stroke();

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { RoomProvider } from '../../providers/room/room';
 
 /**
  * Generated class for the CreateRoomPage page.
@@ -15,11 +16,12 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class CreateRoomPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public room: RoomProvider) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad CreateRoomPage');
+  addCorner()
+  {
+    this.room.addNewCorner(100, 200);
   }
 
 }

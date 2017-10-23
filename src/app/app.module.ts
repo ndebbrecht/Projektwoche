@@ -8,6 +8,7 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { TwoDViewPage } from '../pages/twod-view/twod-view';
 import { CreateRoomPage } from '../pages/create-room/create-room';
+import { RoomProvider } from '../providers/room/room';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { CreateRoomPage } from '../pages/create-room/create-room';
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    RoomProvider
   ]
 })
 export class AppModule {}
