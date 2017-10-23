@@ -94,16 +94,13 @@ export class HomePage {
    {
      this.clearCanvas();
      this._CONTEXT.beginPath();
-     this._CONTEXT.moveTo(this._CANVAS.width/2 - 100, this._CANVAS.height/2 + 100);
-     this._CONTEXT.lineTo(this._CANVAS.width/2 + 100, this._CANVAS.height/2 + 100);
-     this._CONTEXT.lineTo(this._CANVAS.width/2, this._CANVAS.height/2);
-     this._CONTEXT.lineTo(this._CANVAS.width/2 -100, this._CANVAS.height/2 + 100);
-     tmpArray[];
-     this._CANVAS.moveTo(tmpArray[0].getX(), tmpArray[0].getY());
-     for(i=1, i<tmpArray[].length, i++)
+     var tmpArray[100, 200, 300, 100];
+     this._CANVAS.moveTo(tmpArray[0], tmpArray[0]);
+     for(i=1; i<tmpArray[].length; i++)
      {
-       this._CANVAS.lineTo(tmpArray[0].getX(), tmpArray[0].getY());
+       this._CANVAS.lineTo(tmpArray[0], tmpArray[0]);
      }
+     this._CANVAS.lineTo(tmpArray[0], tmpArray[0]);
      this._CONTEXT.lineWidth   = 1;
      this._CONTEXT.strokeStyle = '#ffffff';
      this._CONTEXT.stroke();
