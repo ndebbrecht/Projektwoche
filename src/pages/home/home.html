@@ -1,14 +1,45 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Ionic Blank
+      Ionic Canvas
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+
+
+  <div class="ion-canvas">
+      <canvas #canvas></canvas>
+  </div>
+
+
+
+   <button
+      ion-button
+      color="primary"
+      (click)="drawCircle()">
+      Draw a circle
+   </button>
+
+
+
+   <button
+      ion-button
+      color="primary"
+      (click)="drawSquare()">
+      Draw a Square
+   </button>
+
+
+
+   <button
+      ion-button
+      color="primary"
+      (click)="drawTriangle()">
+      Draw a Triangle
+   </button>
+
+
+
 </ion-content>
