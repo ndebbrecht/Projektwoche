@@ -2,7 +2,8 @@ import { Component,
          ElementRef,
          Input,
          ViewChild } from '@angular/core';
-import { NavController, Platform } from 'ionic-angular';
+import { NavController} from 'ionic-angular';
+import { TwoDViewPage } from '../../pages/twod-view/twod-view';
 
 @Component({
   selector: 'page-home',
@@ -10,7 +11,9 @@ import { NavController, Platform } from 'ionic-angular';
 })
 export class HomePage {
 
+   constructor(public navCtrl: NavController) {}
 
+<<<<<<< HEAD
    /**
      * 'plug into' DOM canvas element using @ViewChild
      */
@@ -104,37 +107,9 @@ export class HomePage {
      this._CONTEXT.lineWidth   = 1;
      this._CONTEXT.strokeStyle = '#ffffff';
      this._CONTEXT.stroke();
+=======
+   onClick() {
+     this.navCtrl.push(TwoDViewPage);
+>>>>>>> 68e5c13b00c3e4e5d891f0fdb7f62668a0e4a1bc
    }
-   /**
-     * Configure the Canvas element
-     *
-     * @public
-     * @method setupCanvas
-     * @return {none}
-     */
-   setupCanvas() : void
-   {
-      this._CONTEXT = this._CANVAS.getContext('2d');
-      this._CONTEXT.fillStyle = "#3e3e3e";
-      this._CANVAS = this.canvasEl.nativeElement;
-      this._CONTEXT.fillRect(0, 0, this._CANVAS.width, this._CANVAS.height);
-   }
-
-
-
-
-   /**
-     * Reset the Canvas element/clear previous content
-     *
-     * @public
-     * @method clearCanvas
-     * @return {none}
-     */
-   clearCanvas() : void
-   {
-      this._CONTEXT.clearRect(0, 0, this._CANVAS.width, this._CANVAS.height);
-      this.setupCanvas();
-   }
-
-
 }
