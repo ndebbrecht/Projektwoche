@@ -58,7 +58,6 @@ export class HomePage {
       this._CANVAS.height 	= this.height;*/
 
       this.initialiseCanvas();
-      this.drawCircle();
    }
 
 
@@ -82,26 +81,6 @@ export class HomePage {
 
 
 
-   /**
-     * Create a circle using canvas drawing API
-     *
-     * @public
-     * @method drawCircle
-     * @return {none}
-     */
-   drawCircle() : void
-   {
-      this.clearCanvas();
-      this._CONTEXT.beginPath();
-
-      // x, y, radius, startAngle, endAngle
-      this._CONTEXT.arc(this._CANVAS.width/2, this._CANVAS.height/2, 80, 0, 2 * Math.PI);
-      this._CONTEXT.lineWidth   = 1;
-      this._CONTEXT.strokeStyle = '#ffffff';
-      this._CONTEXT.stroke();
-   }
-
-
 
 
    /**
@@ -111,42 +90,24 @@ export class HomePage {
      * @method drawSquare
      * @return {none}
      */
-   drawSquare() : void
+   drawRoom() : void
    {
-      this.clearCanvas();
-      this._CONTEXT.beginPath();
-      this._CONTEXT.rect(this._CANVAS.width/2 - 100, this._CANVAS.height/2 - 100, 200, 200);
-      this._CONTEXT.lineWidth   = 1;
-      this._CONTEXT.strokeStyle = '#ffffff';
-      this._CONTEXT.stroke();
+     this.clearCanvas();
+     this._CONTEXT.beginPath();
+     this._CONTEXT.moveTo(this._CANVAS.width/2 - 100, this._CANVAS.height/2 + 100);
+     this._CONTEXT.lineTo(this._CANVAS.width/2 + 100, this._CANVAS.height/2 + 100);
+     this._CONTEXT.lineTo(this._CANVAS.width/2, this._CANVAS.height/2);
+     this._CONTEXT.lineTo(this._CANVAS.width/2 -100, this._CANVAS.height/2 + 100);
+     tmpArray[];
+     this._CANVAS.moveTo(tmpArray[0].getX(), tmpArray[0].getY());
+     for(i=1, i<tmpArray[].length, i++)
+     {
+       this._CANVAS.lineTo(tmpArray[0].getX(), tmpArray[0].getY());
+     }
+     this._CONTEXT.lineWidth   = 1;
+     this._CONTEXT.strokeStyle = '#ffffff';
+     this._CONTEXT.stroke();
    }
-
-
-
-
-   /**
-     * Create a triangle using canvas drawing API
-     *
-     * @public
-     * @method drawTriangle
-     * @return {none}
-     */
-   drawTriangle() : void
-   {
-      this.clearCanvas();
-      this._CONTEXT.beginPath();
-      this._CONTEXT.moveTo(this._CANVAS.width/2 - 100, this._CANVAS.height/2 + 100);
-      this._CONTEXT.lineTo(this._CANVAS.width/2 + 100, this._CANVAS.height/2 + 100);
-      this._CONTEXT.lineTo(this._CANVAS.width/2, this._CANVAS.height/2);
-      this._CONTEXT.lineTo(this._CANVAS.width/2 -100, this._CANVAS.height/2 + 100);
-      this._CONTEXT.lineWidth   = 1;
-      this._CONTEXT.strokeStyle = '#ffffff';
-      this._CONTEXT.stroke();
-   }
-
-
-
-
    /**
      * Configure the Canvas element
      *
