@@ -3,6 +3,7 @@ import { Component,
          Input,
          ViewChild } from '@angular/core';
 import { NavController, Platform } from 'ionic-angular';
+import { CreateRoomPage } from '../../pages/create-room/create-room';
 
 @Component({
   selector: 'page-twod-view',
@@ -145,5 +146,8 @@ export class TwoDViewPage {
          this.setupCanvas();
       }
 
+      onClick() {
+        this.navCtrl.push(CreateRoomPage);
+      }
 
    }

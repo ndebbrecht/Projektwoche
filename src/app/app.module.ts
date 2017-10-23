@@ -7,13 +7,15 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { TwoDViewPage } from '../pages/twod-view/twod-view';
+import { CreateRoomPage } from '../pages/create-room/create-room';
 
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
-    TwoDViewPage
+    TwoDViewPage,
+    CreateRoomPage
   ],
   imports: [
     BrowserModule,
@@ -23,7 +25,8 @@ import { TwoDViewPage } from '../pages/twod-view/twod-view';
   entryComponents: [
     MyApp,
     HomePage,
-    TwoDViewPage
+    TwoDViewPage,
+    CreateRoomPage
   ],
   providers: [
     StatusBar,
