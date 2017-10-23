@@ -27,4 +27,9 @@ export class RoomProvider {
   getLength(){
     return this.roomCoords.length;
   }
+
+  getArray()
+  {
+    return this.roomCoords;
+  }
 }

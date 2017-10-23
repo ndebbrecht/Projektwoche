@@ -61,12 +61,15 @@ export class TwoDViewPage {
       this._CANVAS.height 	= this.height;*/
 
       this.initialiseCanvas();
-      if(this.room.getLength() > 0){
-        this.drawRoom();
-      }
+      setInterval(() => this.renderAll(),1000);
+
    }
 
-
+   renderAll(){
+     if(this.room.getLength() > 0){
+       this.drawRoom();
+     }
+   }
 
    /**
      * Detect if HTML5 Canvas is supported and, if so, configure the
