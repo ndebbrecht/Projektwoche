@@ -2,7 +2,7 @@ import { Component,
          ElementRef,
          Input,
          ViewChild } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, Platform } from 'ionic-angular';
 
 @Component({
   selector: 'page-home',
@@ -31,10 +31,15 @@ export class HomePage {
    private _CONTEXT : any;
 
 
-
-   constructor(public navCtrl: NavController)
+   height = 0;
+   width = 0;
+   constructor(public platform: Platform, public navCtrl: NavController)
    {
-
+     platform.ready().then((readySource) => {
+       this._CANVAS = this.canvasEl.nativeElement;
+       this._CANVAS.width  	= platform.width();
+       this._CANVAS.height 	= platform.height();
+     })
    }
 
 
@@ -49,8 +54,8 @@ export class HomePage {
    ionViewDidLoad() : void
    {
       this._CANVAS 		    = this.canvasEl.nativeElement;
-      this._CANVAS.width  	= 500;
-      this._CANVAS.height 	= 500;
+      /*this._CANVAS.width  	= this.width;
+      this._CANVAS.height 	= this.height;*/
 
       this.initialiseCanvas();
       this.drawCircle();
@@ -153,7 +158,8 @@ export class HomePage {
    {
       this._CONTEXT = this._CANVAS.getContext('2d');
       this._CONTEXT.fillStyle = "#3e3e3e";
-      this._CONTEXT.fillRect(0, 0, 500, 500);
+      this._CANVAS = this.canvasEl.nativeElement;
+      this._CONTEXT.fillRect(0, 0, this._CANVAS.width, this._CANVAS.height);
    }
 
 
