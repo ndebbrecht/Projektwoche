@@ -61,11 +61,12 @@ export class TwoDViewPage {
       this._CANVAS.height 	= this.height;*/
 
       this.initialiseCanvas();
-      setInterval(() => this.renderAll(),1000);
+      setInterval(() => this.renderAll(),200);
 
    }
 
    renderAll(){
+     this.clearCanvas();
      if(this.room.getLength() > 0){
        this.drawRoom();
      }
@@ -102,7 +103,6 @@ export class TwoDViewPage {
      */
    drawRoom() : void
    {
-     this.clearCanvas();
      this._CONTEXT.beginPath();
 
      this._CONTEXT.moveTo(this.room.getCoords(0).x, this.room.getCoords(0).y);
