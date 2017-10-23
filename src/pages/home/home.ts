@@ -94,9 +94,9 @@ export class HomePage {
    {
      this.clearCanvas();
      this._CONTEXT.beginPath();
-     var tmpArray[100, 200, 300, 100];
+     var tmpArray = [100, 200, 300, 100];
      this._CANVAS.moveTo(tmpArray[0], tmpArray[0]);
-     for(i=1; i<tmpArray[].length; i++)
+     for(var i=1; i<tmpArray.length; i++)
      {
        this._CANVAS.lineTo(tmpArray[0], tmpArray[0]);
      }
