@@ -30,6 +30,13 @@ export class TwoDViewPage {
    private _CONTEXT : any;
 
 
+   roomCoords = [];
+
+   addNewCorner(x, y)
+   {
+     roomCoords.push({x: x,y: y});
+   }
+
    height = 0;
    width = 0;
    constructor(public platform: Platform, public navCtrl: NavController)
@@ -57,6 +64,9 @@ export class TwoDViewPage {
       this._CANVAS.height 	= this.height;*/
 
       this.initialiseCanvas();
+      if(this.roomCoords.length > 0){
+        this.drawRoom();
+      }
    }
 
 
@@ -89,19 +99,51 @@ export class TwoDViewPage {
      * @method drawSquare
      * @return {none}
      */
-   /*drawRoom() : void
+   drawRoom() : void
    {
      this.clearCanvas();
      this._CONTEXT.beginPath();
-     var tmpArray[100, 200, 300, 100];
-     this._CANVAS.moveTo(tmpArray[0], tmpArray[0]);
-     for(i=1; i<tmpArray[].length; i++)
+     var tmpArray = [100, 200, 300, 100];
+
+     this._CONTEXT.moveTo(this.roomCoords[0].x, this.roomCoords[0].y);
+     for(var i=1; i<this.roomCoords.length; i++)
      {
-       this._CANVAS.lineTo(tmpArray[0], tmpArray[0]);
+       this._CONTEXT.lineTo(this.roomCoords[i].x, this.roomCoords[i].y);
      }
-     this._CANVAS.lineTo(tmpArray[0], tmpArray[0]);
+     this._CONTEXT.lineTo(this.roomCoords[0].x, this.roomCoords[0].y);
      this._CONTEXT.lineWidth   = 1;
      this._CONTEXT.strokeStyle = '#ffffff';
      this._CONTEXT.stroke();
-   }*/
-}
+   }
+   /**
+        * Configure the Canvas element
+        *
+        * @public
+        * @method setupCanvas
+        * @return {none}
+        */
+      setupCanvas() : void
+      {
+         this._CONTEXT = this._CANVAS.getContext('2d');
+         this._CONTEXT.fillStyle = "#3e3e3e";
+         this._CONTEXT.fillRect(0, 0, this._CANVAS.width, this._CANVAS.height);
+      }
+
+
+
+
+      /**
+        * Reset the Canvas element/clear previous content
+        *
+        * @public
+        * @method clearCanvas
+        * @return {none}
+        */
+      clearCanvas() : void
+      {
+         this._CONTEXT.clearRect(0, 0, this._CANVAS.width, this._CANVAS.height);
+         this.setupCanvas();
+      }
+
+
+   }
