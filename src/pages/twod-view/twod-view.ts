@@ -69,6 +69,7 @@ export class TwoDViewPage {
      if(this.room.getLength() > 0){
        this.drawRoom();
      }
+     this.drawCurrentPosition();
    }
 
    /**
@@ -146,6 +147,17 @@ export class TwoDViewPage {
 
       onClick() {
         this.navCtrl.push(CreateRoomPage);
+      }
+
+      drawCurrentPosition() : void
+      {
+        this._CONTEXT.beginPath();
+
+        // x, y, radius, startAngle, endAngle
+        this._CONTEXT.arc(Math.round(Math.random()*1000), Math.round(Math.random()*1000), 5, 0, 2 * Math.PI);
+        this._CONTEXT.lineWidth   = 2;
+        this._CONTEXT.strokeStyle = '#ffffff';
+        this._CONTEXT.stroke();
       }
 
    }
