@@ -6,6 +6,14 @@ import { NavController, Platform } from 'ionic-angular';
 import { CreateRoomPage } from '../../pages/create-room/create-room';
 import { RoomProvider } from '../../providers/room/room';
 
+import { Observable } from 'rxjs/Observable';
+
+import {
+  MqttMessage,
+  MqttModule,
+  MqttService
+} from 'angular2-mqtt';
+
 @Component({
   selector: 'page-twod-view',
   templateUrl: 'twod-view.html'
@@ -31,19 +39,28 @@ export class TwoDViewPage {
      */
    private _CONTEXT : any;
 
-
-
-
    height = 0;
    width = 0;
-   constructor(public platform: Platform, public navCtrl: NavController, public room: RoomProvider)
+   constructor(public platform: Platform, public navCtrl: NavController, public room: RoomProvider, private _mqttService: MqttService)
    {
      platform.ready().then((readySource) => {
        this._CANVAS = this.canvasEl.nativeElement;
        this._CANVAS.width  	= platform.width();
        this._CANVAS.height 	= platform.height();
-     })
+     });
+     try{
+       this._mqttService.observe('inTopic').subscribe((message: MqttMessage) => {
+         console.log(message.payload.toString());
+       });
+       console.log(this._mqttService.observe('inTopic'));
+     } catch (e){
+       console.log(e);
+     }
    }
+
+   public unsafePublish(topic: string, message: string): void {
+    this._mqttService.unsafePublish(topic, message, {qos: 1, retain: true});
+  }
 
    posArray = [];
 
