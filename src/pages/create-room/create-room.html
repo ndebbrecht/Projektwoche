@@ -19,7 +19,7 @@
   </div>
   <ion-list>
     <ion-item *ngFor="let item of roomCoords">
-      Ecke Nr. {{item.id+1}} (x:{{item.x }}, y:{{item.y}}) <button ion-button (click)="deleteCorner(item.id)">x</button>
+      <table><td>Ecke Nr. {{item.id+1}}<br/>x: {{item.x }}, y: {{item.y}}, z: {{item.z}}</td><td>&nbsp;<button ion-button (click)="deleteCorner(item.id)">Entfernen</button></td></table>
     </ion-item>
   </ion-list>
   <button ion-button (click)="addCorner()">Ecke Hinzufügen</button>
