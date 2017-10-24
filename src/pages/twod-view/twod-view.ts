@@ -110,15 +110,16 @@ export class TwoDViewPage {
      this._CONTEXT.beginPath();
      for(let roomCoords of this.building)
      {
-       if(roomCoords.length>0){
+       if(roomCoords.roomCoords){
+       if(roomCoords.roomCoords.length>0){
         this._CONTEXT.moveTo(roomCoords[0].x, roomCoords[0].y);
-        for(var i=1; i<roomCoords.getLength(); i++)
+        for(var i=1; i<roomCoords.roomCoords.length; i++)
         {
-          this._CONTEXT.lineTo(roomCoords[i].x, roomCoords[i].y);
+          this._CONTEXT.lineTo(roomCoords.roomCoords[i].x, roomCoords.roomCoords[i].y);
         }
-        this._CONTEXT.lineTo(roomCoords[0].x, roomCoords[0].y);
+        this._CONTEXT.lineTo(roomCoords.roomCoords[0].x, roomCoords.roomCoords[0].y);
        }
-     }
+     }}
      this._CONTEXT.lineWidth   = 5;
      this._CONTEXT.strokeStyle = '#ffffff';
      this._CONTEXT.setLineDash([]);

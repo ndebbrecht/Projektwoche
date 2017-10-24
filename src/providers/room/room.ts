@@ -13,7 +13,7 @@ export class RoomProvider {
   constructor() {
 
   }
-  building = Array();
+  building = [];
 
   addNewRoom(){
     this.building.push({id: this.building.length, roomCoords:Array()});
