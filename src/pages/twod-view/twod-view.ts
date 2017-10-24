@@ -116,6 +116,7 @@ export class TwoDViewPage {
      this._CONTEXT.lineTo(this.room.getCoords(0).x, this.room.getCoords(0).y);
      this._CONTEXT.lineWidth   = 5;
      this._CONTEXT.strokeStyle = '#ffffff';
+     this._CONTEXT.setLineDash([]);
      this._CONTEXT.stroke();
    }
    /**
@@ -176,7 +177,7 @@ export class TwoDViewPage {
         }
         this._CONTEXT.lineWidth = 3;
         this._CONTEXT.strokeStyle = '#00ff7f';
-        this._CONTEXT.setLineDash([5, 15, 25]);
+        this._CONTEXT.setLineDash([25, 5]);
         this._CONTEXT.stroke();
       }
 
