@@ -17,5 +17,10 @@
   <div>
     Hier kannst du deinen Raum erstellen. Bitte gehe die Ecken des Raums nachd er Reihe ab und drücke jeweils "Ecke hinzufügen".
   </div>
+  <ion-list>
+    <ion-item *ngFor="let item of roomCoords">
+      Ecke Nr. {{item.id+1}} (x:{{item.x }}, y:{{item.y}}) <button ion-button (click)="deleteCorner(item.id)">x</button>
+    </ion-item>
+  </ion-list>
   <button ion-button (click)="addCorner()">Ecke Hinzufügen</button>
 </ion-content>

@@ -19,9 +19,15 @@ export class CreateRoomPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public room: RoomProvider) {
   }
 
+  roomCoords = this.room.getArray();
+
   addCorner()
   {
     this.room.addNewCorner(Math.round(Math.random()*1000), Math.round(Math.random()*1000), Math.round(Math.random()*1000));
+  }
+
+  deleteCorner(index){
+    this.room.removeCorner(index);
   }
 
 }

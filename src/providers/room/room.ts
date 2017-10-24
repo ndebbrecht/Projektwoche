@@ -11,13 +11,13 @@ import 'rxjs/add/operator/map';
 export class RoomProvider {
 
   constructor() {
-    
+
   }
   roomCoords = [];
 
   addNewCorner(x, y, z)
   {
-    this.roomCoords.push({x: x,y: y, z: z});
+    this.roomCoords.push({id: this.roomCoords.length,x: x,y: y, z: z});
   }
 
   getCoords(index){
@@ -31,5 +31,10 @@ export class RoomProvider {
   getArray()
   {
     return this.roomCoords;
+  }
+
+  removeCorner(index)
+  {
+    this.roomCoords.splice(index, 1);
   }
 }
