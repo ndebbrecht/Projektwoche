@@ -18,9 +18,12 @@
     Hier kannst du deinen Raum erstellen. Bitte gehe die Ecken des Raums nachd er Reihe ab und drücke jeweils "Ecke hinzufügen".
   </div>
   <ion-list>
+  <ion-item ng-repeat="roomCoords of building">
     <ion-item *ngFor="let item of roomCoords">
-      <table><td>Ecke Nr. {{item.id+1}}<br/>x: {{item.x }}, y: {{item.y}}, z: {{item.z}}</td><td>&nbsp;<button ion-button (click)="deleteCorner(item.id)">Entfernen</button></td></table>
+      <table><td>Ecke Nr. {{item.id+1}}<br/>x: {{item.x }}, y: {{item.y}}, z: {{item.z}}</td><td>&nbsp;<button ion-button (click)="deleteCorner(roomCoords.id, item.id)">Entfernen</button></td></table>
     </ion-item>
-  </ion-list>
-  <button ion-button (click)="addCorner()">Ecke Hinzufügen</button>
+  <button ion-button (click)="addCorner(roomCoords.id)">Ecke Hinzufügen</button>
+</ion-item>
+</ion-list>
+<button ion-button (click)="addNewRoom()">Neuen Raum hinzufügen</button>
 </ion-content>

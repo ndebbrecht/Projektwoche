@@ -13,28 +13,36 @@ export class RoomProvider {
   constructor() {
 
   }
-  roomCoords = [];
+  building = [];
 
-  addNewCorner(x, y, z)
+  addNewRoom(){
+    this.building.push({id: this.building.length, roomCoords:Array()});
+  }
+
+  addNewCorner(roomId,x, y, z)
   {
-    this.roomCoords.push({id: this.roomCoords.length,x: x,y: y, z: z});
+    this.building[roomId].roomCoords.push({id: this.building[roomId].roomCoords.length,x: x,y: y, z: z});
   }
 
-  getCoords(index){
-    return this.roomCoords[index];
+  getCoords(roomId, cornerId){
+    return this.building[roomId].roomCoords[cornerId];
   }
 
-  getLength(){
-    return this.roomCoords.length;
+  getLength(roomId){
+    return this.building[roomId].roomCoords.length;
   }
 
-  getArray()
+  getArray(roomId)
   {
-    return this.roomCoords;
+    return this.building[roomId].roomCoords;
   }
 
-  removeCorner(index)
+  removeCorner(roomId, cornerId)
   {
-    this.roomCoords.splice(index, 1);
+    this.building[roomId].roomCoords.splice(cornerId, 1);
+  }
+
+  getBuilding(){
+    return this.building;
   }
 }

@@ -19,15 +19,20 @@ export class CreateRoomPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public room: RoomProvider) {
   }
 
-  roomCoords = this.room.getArray();
+  building = this.room.getBuilding();
 
-  addCorner()
+  addNewRoom()
   {
-    this.room.addNewCorner(Math.round(Math.random()*1000), Math.round(Math.random()*1000), Math.round(Math.random()*1000));
+    this.room.addNewRoom();
   }
 
-  deleteCorner(index){
-    this.room.removeCorner(index);
+  addCorner(buildingId)
+  {
+    this.room.addNewCorner(buildingId, Math.round(Math.random()*1000), Math.round(Math.random()*1000), Math.round(Math.random()*1000));
+  }
+
+  deleteCorner(buildingId, roomId){
+    this.room.removeCorner(buildingId, roomId);
   }
 
 }

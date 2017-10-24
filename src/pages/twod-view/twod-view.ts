@@ -46,6 +46,7 @@ export class TwoDViewPage {
    }
 
    posArray = [];
+   building = this.room.getBuilding();
 
 
    /**
@@ -68,7 +69,7 @@ export class TwoDViewPage {
 
    renderAll(){
      this.clearCanvas();
-     if(this.room.getLength() > 0){
+     if(this.room.getBuilding().length > 0){
        this.drawRoom();
      };
      this.posArray.push({x: Math.round(Math.random()*1000), y: Math.round(Math.random()*1000), z: Math.round(Math.random()*1000)});
@@ -107,13 +108,17 @@ export class TwoDViewPage {
    drawRoom() : void
    {
      this._CONTEXT.beginPath();
-
-     this._CONTEXT.moveTo(this.room.getCoords(0).x, this.room.getCoords(0).y);
-     for(var i=1; i<this.room.getLength(); i++)
+     for(let roomCoords of this.building)
      {
-       this._CONTEXT.lineTo(this.room.getCoords(i).x, this.room.getCoords(i).y);
+       if(roomCoords.length>0){
+        this._CONTEXT.moveTo(roomCoords[0].x, roomCoords[0].y);
+        for(var i=1; i<roomCoords.getLength(); i++)
+        {
+          this._CONTEXT.lineTo(roomCoords[i].x, roomCoords[i].y);
+        }
+        this._CONTEXT.lineTo(roomCoords[0].x, roomCoords[0].y);
+       }
      }
-     this._CONTEXT.lineTo(this.room.getCoords(0).x, this.room.getCoords(0).y);
      this._CONTEXT.lineWidth   = 5;
      this._CONTEXT.strokeStyle = '#ffffff';
      this._CONTEXT.setLineDash([]);
