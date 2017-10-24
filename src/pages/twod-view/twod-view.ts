@@ -6,7 +6,7 @@ import { NavController, Platform } from 'ionic-angular';
 import { CreateRoomPage } from '../../pages/create-room/create-room';
 import { RoomProvider } from '../../providers/room/room';
 
-import {Paho} from 'ng2-mqtt/mqttws31';
+import * as mqtt from 'mqtt';
 
 @Component({
   selector: 'page-twod-view',
@@ -35,7 +35,6 @@ export class TwoDViewPage {
 
 
 
-   client;
    height = 0;
    width = 0;
    constructor(public platform: Platform, public navCtrl: NavController, public room: RoomProvider)
@@ -46,38 +45,20 @@ export class TwoDViewPage {
        this._CANVAS.height 	= platform.height();
      })
 
-     this.client = new Paho.MQTT.Client('192.168.32.51', 1883, "");
 
-
-    this.client.connect({onSuccess: this.onConnected.bind(this)});
-    this.onConnected();
+     var client = mqtt.connect('mqtt://broker.hivemq.com');
+     client.on('connect', function(){
+       console.log("gfdhgfjhghdsfa");
+       client.subscribe('inTopic');
+     })
+     client.on('message', function(topic, message){
+       console.log(message.toString());
+     })
    }
 
    posArray = [];
 
-   onConnected() {
-    console.log("Connected");
-    this.client.subscribe("inTopic");
-    this.sendMessage('Hello World');
-  }
 
-  sendMessage(message: string) {
-    let packet = new Paho.MQTT.Message(message);
-    packet.destinationName = "inTopic";
-    this.client.send(packet);
-  }
-
-  onMessage() {
-    this.client.onMessageArrived = (message: Paho.MQTT.Message) => {
-      console.log('Message arrived : ' + message.payloadString);
-    };
-  }
-
-  onConnectionLost() {
-    this.client.onConnectionLost = (responseObject: Object) => {
-      console.log('Connection lost : ' + JSON.stringify(responseObject));
-    };
-  }
 
 
    /**
