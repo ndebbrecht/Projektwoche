@@ -45,6 +45,7 @@ export class TwoDViewPage {
      })
    }
 
+   posArray = [];
 
 
    /**
@@ -69,8 +70,10 @@ export class TwoDViewPage {
      this.clearCanvas();
      if(this.room.getLength() > 0){
        this.drawRoom();
-     }
+     };
+     this.posArray.push({x: Math.round(Math.random()*1000), y: Math.round(Math.random()*1000), z: Math.round(Math.random()*1000)});
      this.drawCurrentPosition();
+     this.drawPath();
    }
 
    /**
@@ -111,7 +114,7 @@ export class TwoDViewPage {
        this._CONTEXT.lineTo(this.room.getCoords(i).x, this.room.getCoords(i).y);
      }
      this._CONTEXT.lineTo(this.room.getCoords(0).x, this.room.getCoords(0).y);
-     this._CONTEXT.lineWidth   = 1;
+     this._CONTEXT.lineWidth   = 5;
      this._CONTEXT.strokeStyle = '#ffffff';
      this._CONTEXT.stroke();
    }
@@ -149,14 +152,31 @@ export class TwoDViewPage {
         this.navCtrl.push(CreateRoomPage);
       }
 
+
       drawCurrentPosition() : void
       {
         this._CONTEXT.beginPath();
 
         // x, y, radius, startAngle, endAngle
-        this._CONTEXT.arc(Math.round(Math.random()*1000), Math.round(Math.random()*1000), 5, 0, 2 * Math.PI);
+        this._CONTEXT.arc(this.posArray[this.posArray.length-1], this.posArray[this.posArray.length-1], 5, 0, 2 * Math.PI);
         this._CONTEXT.lineWidth   = 2;
         this._CONTEXT.strokeStyle = '#ffffff';
+        this._CONTEXT.stroke();
+      }
+
+      drawPath() : void
+      {
+        this._CONTEXT.beginPath();
+        this._CONTEXT.moveTo(this.posArray[this.posArray.length-1], this.posArray[this.posArray.length-1]);
+        for(var i = this.posArray.length-1; i>=this.posArray.length-11; i--)
+        {
+          if(i>=0){
+            this._CONTEXT.lineTo(this.posArray[i].x, this.posArray[i].y);
+          }
+        }
+        this._CONTEXT.lineWidth = 3;
+        this._CONTEXT.strokeStyle = '#00ff7f';
+        this._CONTEXT.setLineDash([5, 15, 25]);
         this._CONTEXT.stroke();
       }
 
