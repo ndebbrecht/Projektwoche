@@ -149,7 +149,7 @@ export class TwoDViewPage {
          this.setupCanvas();
       }
 
-      onClick() {
+      switchToCreateRoom() {
         this.navCtrl.push(CreateRoomPage);
       }
 
