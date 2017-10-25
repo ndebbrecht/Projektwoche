@@ -33,32 +33,44 @@ export class TwoDViewPage {
    private _CONTEXT : any;
 
 
-
+   coordX: number;
+   coordY: number;
+   coordZ: number;
    height = 0;
    width = 0;
-   public myOtherMessage$: Observable<MqttMessage>;
+   posArray : [{x: number, y:number, z:number}];
 
    constructor(public platform: Platform, public navCtrl: NavController, public room: RoomProvider)
    {
+     this.posArray = [{x:0,y:0,z:0}];
      platform.ready().then((readySource) => {
        this._CANVAS = this.canvasEl.nativeElement;
        this._CANVAS.width  	= platform.width();
        this._CANVAS.height 	= platform.height();
      })
 
-     const client  = connect('mqtt://192.168.32.51:1884');
-     console.log("so weit so gut");
+
+     const client  = connect('mqtt://192.168.32.226:1884');
      client.on('connect', function(){
        console.log("verbunden");
        client.subscribe('inTopic');
      })
 
-     client.on('message', function(topic, message){
-       console.log(message.toString());
+     client.on('message', (topic, message) => {
+       var allCoords = message.toString();
+       var coords = allCoords.split(",");
+       this.coordX = parseInt(coords[0]);
+       this.coordY = parseInt(coords[1]);
+       this.coordZ = parseInt(coords[2]);
+       this.posArray.push({
+         x: this.coordX,
+         y: this.coordY,
+         z: this.coordZ
+       });
      })
    }
 
-   posArray = [];
+
 
    /**
      * Implement functionality as soon as the template view has loaded
@@ -83,7 +95,8 @@ export class TwoDViewPage {
      if(this.room.getLength() > 0){
        this.drawRoom();
      };
-     this.posArray.push({x: Math.round(Math.random()*1000), y: Math.round(Math.random()*1000), z: Math.round(Math.random()*1000)});
+     //this.posArray.push({x: parseInt(this.coordX), y: parseInt(this.coordY), z: parseInt(this.coordZ)});
+
      this.drawCurrentPosition();
      this.drawPath();
    }
