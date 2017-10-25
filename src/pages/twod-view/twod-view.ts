@@ -5,8 +5,7 @@ import { Component,
 import { NavController, Platform } from 'ionic-angular';
 import { CreateRoomPage } from '../../pages/create-room/create-room';
 import { RoomProvider } from '../../providers/room/room';
-
-import * as mqtt from 'mqtt';
+import { connect } from 'mqtt';
 
 @Component({
   selector: 'page-twod-view',
@@ -37,6 +36,8 @@ export class TwoDViewPage {
 
    height = 0;
    width = 0;
+   public myOtherMessage$: Observable<MqttMessage>;
+
    constructor(public platform: Platform, public navCtrl: NavController, public room: RoomProvider)
    {
      platform.ready().then((readySource) => {
@@ -45,21 +46,19 @@ export class TwoDViewPage {
        this._CANVAS.height 	= platform.height();
      })
 
-
-     var client = mqtt.connect('mqtt://broker.hivemq.com');
+     const client  = connect('mqtt://192.168.32.51:1884');
+     console.log("so weit so gut");
      client.on('connect', function(){
-       console.log("gfdhgfjhghdsfa");
+       console.log("verbunden");
        client.subscribe('inTopic');
      })
+
      client.on('message', function(topic, message){
        console.log(message.toString());
      })
    }
 
    posArray = [];
-
-
-
 
    /**
      * Implement functionality as soon as the template view has loaded
@@ -106,10 +105,6 @@ export class TwoDViewPage {
    }
 
 
-
-
-
-
    /**
      * Create a square using canvas drawing API
      *
@@ -145,9 +140,6 @@ export class TwoDViewPage {
          this._CONTEXT.fillStyle = "#3e3e3e";
          this._CONTEXT.fillRect(0, 0, this._CANVAS.width, this._CANVAS.height);
       }
-
-
-
 
       /**
         * Reset the Canvas element/clear previous content
