@@ -82,9 +82,11 @@ export class TwoDViewPage {
        }
        this.drawCurrentPosition();
 
-       var filterString = "";
-       var tmp = filterString.concat(((coords[0])).toString(), ",", ((coords[1])).toString(), ",", ((coords[2])).toString());
-       client.publish('filterTopic', tmp);
+       if (!this.platform.is('android')) {
+         var filterString = "";
+         var tmp = filterString.concat(((coords[0])).toString(), ",", ((coords[1])).toString(), ",", ((coords[2])).toString());
+         client.publish('filterTopic', tmp);
+       }
      })
      this.room.addNewCorner((/*15750*/4500/this.zoom)+this.padding, (/*328*/851/this.zoom)+this.padding, 1);
      this.room.addNewCorner((/*15750*/4500/this.zoom)+this.padding, (/*10950*/6267/this.zoom)+this.padding, 1);
@@ -142,7 +144,6 @@ export class TwoDViewPage {
          this.infoVisible = false;
          this.visibleNodes = [];
        }
-       console.log(this.info.info[i].x);
      }
      console.log(this.visibleNodes);
    }
@@ -193,7 +194,7 @@ export class TwoDViewPage {
         this._CONTEXT.beginPath();
 
         // x, y, radius, startAngle, endAngle
-        this._CONTEXT.arc(this.posArray.getObject(this.posArray.arrayLength()-1).x, this.posArray.getObject(this.posArray.arrayLength()-1).y, 10, 0, 2 * Math.PI);
+        this._CONTEXT.arc(this.posArray.getObject(this.posArray.arrayLength()-1).x, this.posArray.getObject(this.posArray.arrayLength()-1).y, 10*((this.posArray.getObject(this.posArray.arrayLength()-1).z)/*1000*//1500), 0, 2 * Math.PI);
         this._CONTEXT.lineWidth   = 2;
         this._CONTEXT.strokeStyle = '#ffffff';
         this._CONTEXT.stroke();
@@ -205,7 +206,8 @@ export class TwoDViewPage {
           this._CONTEXT.beginPath();
           this._CONTEXT.rect(this.info.info[i].x[0], this.info.info[i].y[0], this.info.info[i].x[this.info.info[i].x.length-1]-this.info.info[i].x[0], this.info.info[i].y[this.info.info[i].y.length-1]-this.info.info[i].y[0])
           this._CONTEXT.lineWidth   = 2;
-          this._CONTEXT.strokeStyle = '#ffffff';
+          this._CONTEXT.strokeStyle = '#1E90FF';
+          this._CONTEXT.setLineDash([5]);
           this._CONTEXT.stroke();
         }
       }

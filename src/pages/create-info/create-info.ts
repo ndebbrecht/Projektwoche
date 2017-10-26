@@ -29,7 +29,7 @@ export class CreateInfoPage {
   }
 
   addNode() {
-    this.info.addInfoNode(this.posArray.getObject(this.posArray.arrayLength()-1).x,this.posArray.getObject(this.posArray.arrayLength()-1).y,this.posArray.getObject(this.posArray.arrayLength()-1).z,parseInt(this.radius),this.title,this.desc);
+    this.info.addInfoNode(this.posArray.getObject(this.posArray.arrayLength()-1).x,this.posArray.getObject(this.posArray.arrayLength()-1).y,this.posArray.getObject(this.posArray.arrayLength()-1).z,20,this.title,this.desc);
     console.log(this.radius);
     this.viewCtrl.dismiss();
   }
