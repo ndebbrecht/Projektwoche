@@ -5,7 +5,7 @@ import { Component,
 import { ModalController, NavController, Platform } from 'ionic-angular';
 import { CreateRoomPage } from '../../pages/create-room/create-room';
 import { RoomProvider } from '../../providers/room/room';
-import { PosArrayProvider } from '../../provider/pos-array/pos-array';
+import { PosArrayProvider } from '../../providers/pos-array/pos-array';
 import { InfoNodeProvider } from '../../providers/info-node/info-node';
 import { InfoModalPage } from '../../pages/info-modal/info-modal';
 import { connect } from 'mqtt';
