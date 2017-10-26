@@ -22,5 +22,13 @@
       Ecke Nr. {{item.id+1}} (x:{{item.x }}, y:{{item.y}}) <button ion-button (click)="deleteCorner(item.id)">x</button>
     </ion-item>
   </ion-list>
+
+  <ion-list>
+    <ion-item *ngFor="let item of infoNodes">
+      {{item.title}}
+    </ion-item>
+  </ion-list>
   <button ion-button (click)="addCorner()">Ecke Hinzufügen</button>
+
+  <button ion-button (click)="addInfo()">Info Hinzufügen</button>
 </ion-content>

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { ModalController, IonicPage, NavController, NavParams } from 'ionic-angular';
 import { RoomProvider } from '../../providers/room/room';
+import { InfoNodeProvider } from '../../providers/info-node/info-node';
+import { CreateInfoPage } from '../create-info/create-info';
 
 /**
  * Generated class for the CreateRoomPage page.
@@ -16,10 +18,11 @@ import { RoomProvider } from '../../providers/room/room';
 })
 export class CreateRoomPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public room: RoomProvider) {
+  constructor(public modalCtrl: ModalController, public navCtrl: NavController, public navParams: NavParams, public room: RoomProvider, public info: InfoNodeProvider) {
   }
 
   roomCoords = this.room.getArray();
+  infoNodes = this.info.getArray();
 
   addCorner()
   {
@@ -28,6 +31,12 @@ export class CreateRoomPage {
 
   deleteCorner(index){
     this.room.removeCorner(index);
+  }
+
+  addInfo() {
+    const profileModal = this.modalCtrl.create(CreateInfoPage);
+    profileModal.present();
+    //this.info.addInfoNode(50, 50, 50, 300, "Infopunkt", "woe, das ist echt krasse Info, du hast jetzt sehr viel gelernt!");
   }
 
 }
