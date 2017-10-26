@@ -30,7 +30,7 @@ export class InfoNodeProvider {
   }];
 
   constructor() {
-    this.info = [{x: [], y: [], z:[], radius: 0, title: "", desc: ""}];
+    this.info = [{id: 0, x: [], y: [], z:[], radius: 0, title: "", desc: ""}];
   }
 
   addInfoNode(x: number, y: number, z: number, radius: number, title: String, desc: String) {
@@ -50,6 +50,7 @@ export class InfoNodeProvider {
 
     console.log(this.info);
     this.info.push({
+      id: this.info.length,
       x : xRange,
       y : yRange,
       z : zRange,
@@ -57,6 +58,10 @@ export class InfoNodeProvider {
       title : title,
       desc : desc
     })
+  }
+
+  removeInfo(index) {
+    this.info.splice(index-1, 1);
   }
 
   getLength() {

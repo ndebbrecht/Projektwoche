@@ -71,9 +71,11 @@ export class TwoDViewPage {
        client.subscribe('outTopic');
      })
 
+     var coords = []
+
      client.on('message', (topic, message) => {
        var allCoords = message.toString();
-       var coords = allCoords.split(",");
+       coords = allCoords.split(",");
        this.coordX = ((parseInt(coords[0])/this.zoom)+this.padding);
        this.coordY = ((parseInt(coords[1])/this.zoom)+this.padding);
        this.coordZ = (parseInt(coords[2])/this.zoom);
@@ -99,6 +101,9 @@ export class TwoDViewPage {
      this.room.addNewCorner((/*15750*/4500/this.zoom)+this.padding, (/*10950*/6267/this.zoom)+this.padding, 1);
      this.room.addNewCorner(this.padding, (/*10950*/6267/this.zoom)+this.padding, 1);
      this.room.addNewCorner(this.padding, this.padding, 1);
+
+     var filterString = "";
+     client.publish('filterTopic', filterString.concat(((coords[0])/this.zoom), ",", ((coords[1])/this.zoom), ",", ((coords[2])/this.zoom)));
    }
 
 

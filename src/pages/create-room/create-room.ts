@@ -33,6 +33,10 @@ export class CreateRoomPage {
     this.room.removeCorner(index);
   }
 
+  deleteInfo(index) {
+    this.info.removeInfo(index);
+  }
+
   addInfo() {
     const profileModal = this.modalCtrl.create(CreateInfoPage);
     profileModal.present();
