@@ -142,6 +142,7 @@ export class TwoDViewPage {
          this.infoVisible = false;
          this.visibleNodes = [];
        }
+       console.log(this.info.info[i].x);
      }
      console.log(this.visibleNodes);
    }
