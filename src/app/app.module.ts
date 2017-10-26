@@ -25,7 +25,7 @@ import { InfoModalPage } from '../pages/info-modal/info-modal';
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
   ],
   bootstrap: [IonicApp],
   entryComponents: [

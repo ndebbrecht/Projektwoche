@@ -17,7 +17,7 @@ export class RoomProvider {
 
   addNewCorner(x, y, z)
   {
-    this.roomCoords.push({id: this.roomCoords.length,x: x,y: y, z: z});
+    this.roomCoords.push({id: this.roomCoords.length,x: y,y: x, z: z});
   }
 
   getCoords(index){
