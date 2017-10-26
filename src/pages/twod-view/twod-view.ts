@@ -19,6 +19,14 @@ export class TwoDViewPage {
    @ViewChild('canvas') canvasEl : ElementRef;
 
 
+   /*
+    * 1. Ecke: 15750, 3280
+    * 2. Ecke: 15750, 10950
+    * 3. Ecke: 0, 10950
+    * 4. Ecke: 0, 0
+    *
+    */
+
 
    /**
      * Reference Canvas object
@@ -40,9 +48,12 @@ export class TwoDViewPage {
    width = 0;
    posArray : [{x: number, y:number, z:number}];
 
+   padding = 50;
+   zoom = 50;
+
    constructor(public platform: Platform, public navCtrl: NavController, public room: RoomProvider)
    {
-     this.posArray = [{x:0,y:0,z:0}];
+     this.posArray = [{x:this.padding,y:this.padding,z:0}];
      platform.ready().then((readySource) => {
        this._CANVAS = this.canvasEl.nativeElement;
        this._CANVAS.width  	= platform.width();
@@ -59,16 +70,61 @@ export class TwoDViewPage {
      client.on('message', (topic, message) => {
        var allCoords = message.toString();
        var coords = allCoords.split(",");
-       this.coordX = (parseInt(coords[0])/30)+(platform.height());
-       this.coordY = (parseInt(coords[1])/30)+(platform.width());
-       this.coordZ = (parseInt(coords[2])/30);
-       this.posArray.push({
-         x: this.coordX,
-         y: this.coordY,
-         z: this.coordZ
-       });
-       console.log(this.posArray);
+       this.coordY = ((parseInt(coords[0])/this.zoom)+this.padding);
+       this.coordX = ((parseInt(coords[1])/this.zoom)+this.padding);
+       this.coordZ = (parseInt(coords[2])/this.zoom);
+       if(
+         this.coordX>this.padding &&
+         this.coordY>this.padding &&
+         this.coordX<(this.padding+(10950/this.zoom)) &&
+         this.coordY<(this.padding+(15750/this.zoom))
+       )
+       {
+         if(this.posArray.length<11)
+         {
+           this.posArray.push({
+             x: this.coordX,
+             y: this.coordY,
+             z: this.coordZ
+           });
+         } else
+         {
+           var avgX = 0;
+           var avgY = 0;
+           var tmpX = 0;
+           var tmpY = 0;
+           for(var i = this.posArray.length-1; i>this.posArray.length-11; i--){
+             tmpX += this.posArray[i].x;
+             tmpY += this.posArray[i].y;
+           }
+           avgX = tmpX/5;
+           avgY = tmpY/5;
+           if(
+             this.coordX<avgY*1.4 &&
+             this.coordX>avgY*0.6 &&
+             this.coordY<avgX*1.4 &&
+             this.coordY>avgX*0.6
+           )
+           {
+             this.posArray.push({
+               x: this.coordX,
+               y: this.coordY,
+               z: this.coordZ
+             });
+           } else {
+             this.posArray.push({x:avgX,y:avgY,z:1});
+           }
+         }
+       }
+       if(this.posArray.length>100){
+         this.posArray.shift();
+       }
+
      })
+     this.room.addNewCorner((15750/this.zoom)+this.padding, (328/this.zoom)+this.padding, 1);
+     this.room.addNewCorner((15750/this.zoom)+this.padding, (10950/this.zoom)+this.padding, 1);
+     this.room.addNewCorner(this.padding, (10950/this.zoom)+this.padding, 1);
+     this.room.addNewCorner(this.padding, this.padding, 1);
    }
 
 
