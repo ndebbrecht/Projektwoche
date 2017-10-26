@@ -49,7 +49,7 @@ export class TwoDViewPage {
    posArray : [{x: number, y:number, z:number}];
 
    padding = 50;
-   zoom = 50;
+   zoom = 30;
 
    constructor(public platform: Platform, public navCtrl: NavController, public room: RoomProvider)
    {
@@ -80,7 +80,7 @@ export class TwoDViewPage {
          this.coordY<(this.padding+(15750/this.zoom))
        )
        {
-         if(this.posArray.length<11)
+         if(this.posArray.length<101)
          {
            this.posArray.push({
              x: this.coordX,
@@ -93,17 +93,17 @@ export class TwoDViewPage {
            var avgY = 0;
            var tmpX = 0;
            var tmpY = 0;
-           for(var i = this.posArray.length-1; i>this.posArray.length-11; i--){
+           for(var i = this.posArray.length-1; i>this.posArray.length-101; i--){
              tmpX += this.posArray[i].x;
              tmpY += this.posArray[i].y;
            }
-           avgX = tmpX/10;
-           avgY = tmpY/10;
+           avgX = tmpX/100;
+           avgY = tmpY/100;
            if(
-             this.coordX<avgY*1.4 &&
-             this.coordX>avgY*0.6 &&
-             this.coordY<avgX*1.4 &&
-             this.coordY>avgX*0.6
+             this.coordX<avgY*1.1 &&
+             this.coordX>avgY*0.9 &&
+             this.coordY<avgX*1.1 &&
+             this.coordY>avgX*0.9
            )
            {
              this.posArray.push({
@@ -116,7 +116,7 @@ export class TwoDViewPage {
            }
          }
        }
-       if(this.posArray.length>100){
+       if(this.posArray.length>1000){
          this.posArray.shift();
        }
 
@@ -244,7 +244,7 @@ export class TwoDViewPage {
       {
         this._CONTEXT.beginPath();
         this._CONTEXT.moveTo(this.posArray[this.posArray.length-1], this.posArray[this.posArray.length-1]);
-        for(var i = this.posArray.length-1; i>=this.posArray.length-11; i--)
+        for(var i = this.posArray.length-1; i>=this.posArray.length-31; i--)
         {
           if(i>=0){
             this._CONTEXT.lineTo(this.posArray[i].x, this.posArray[i].y);
