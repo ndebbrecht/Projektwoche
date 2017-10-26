@@ -100,8 +100,6 @@ export class TwoDViewPage {
       this.initialiseCanvas();
       setInterval(() => this.renderAll(),20);
       setInterval(() => this.checkInfo(),200);
-      this.info.addInfoNode(50,50,50,30,"tgik","jdslk");  //Test, kann weg
-      this.info.addInfoNode(160,160,160,60,"tgsik","jsdslk");  //Test, kann weg
 
    }
 
