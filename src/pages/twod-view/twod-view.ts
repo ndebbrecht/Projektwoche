@@ -5,6 +5,7 @@ import { Component,
 import { ModalController, NavController, Platform } from 'ionic-angular';
 import { CreateRoomPage } from '../../pages/create-room/create-room';
 import { RoomProvider } from '../../providers/room/room';
+import { PosArrayProvider } from '../../provider/pos-array/pos-array';
 import { InfoNodeProvider } from '../../providers/info-node/info-node';
 import { InfoModalPage } from '../../pages/info-modal/info-modal';
 import { connect } from 'mqtt';
@@ -15,48 +16,34 @@ import { connect } from 'mqtt';
 })
 export class TwoDViewPage {
 
- /**
-     * 'plug into' DOM canvas element using @ViewChild
-     */
    @ViewChild('canvas') canvasEl : ElementRef;
 
 
    /*
+    * SL Foyer
     * 1. Ecke: 15750, 3280
     * 2. Ecke: 15750, 10950
     * 3. Ecke: 0, 10950
     * 4. Ecke: 0, 0
-    *
     */
 
-
-   /**
-     * Reference Canvas object
-     */
    private _CANVAS  : any;
 
-
-
-   /**
-     * Reference the context for the Canvas element
-     */
    private _CONTEXT : any;
-
 
    coordX: number;
    coordY: number;
    coordZ: number;
    height = 0;
    width = 0;
-   posArray : [{x: number, y:number, z:number}];
    calcArray : [{x: number, y:number, z:number}];
 
    padding = 50;
    zoom = 10;
+   positionHeight : number;
 
-   constructor(public modalCtrl: ModalController, public platform: Platform, public navCtrl: NavController, public room: RoomProvider, public info: InfoNodeProvider)
+   constructor(public modalCtrl: ModalController, public platform: Platform, public navCtrl: NavController, public room: RoomProvider, public info: InfoNodeProvider, public posArray: PosArrayProvider)
    {
-     this.posArray = [{x:this.padding,y:this.padding,z:0}];
      this.calcArray = [{x:this.padding,y:this.padding,z:0}]
      platform.ready().then((readySource) => {
        this._CANVAS = this.canvasEl.nativeElement;
@@ -78,7 +65,7 @@ export class TwoDViewPage {
        coords = allCoords.split(",");
        this.coordX = ((parseInt(coords[0])/this.zoom)+this.padding);
        this.coordY = ((parseInt(coords[1])/this.zoom)+this.padding);
-       this.coordZ = (parseInt(coords[2])/this.zoom);
+       this.coordZ = parseInt(coords[2]);
        if(
          this.coordX>this.padding &&
          this.coordY>this.padding &&
@@ -106,20 +93,9 @@ export class TwoDViewPage {
      client.publish('filterTopic', filterString.concat(((coords[0])/this.zoom), ",", ((coords[1])/this.zoom), ",", ((coords[2])/this.zoom)));
    }
 
-
-
-   /**
-     * Implement functionality as soon as the template view has loaded
-     *
-     * @public
-     * @method ionViewDidLoad
-     * @return {none}
-     */
    ionViewDidLoad() : void
    {
       this._CANVAS 		    = this.canvasEl.nativeElement;
-      /*this._CANVAS.width  	= this.width;
-      this._CANVAS.height 	= this.height;*/
 
       this.initialiseCanvas();
       setInterval(() => this.renderAll(),20);
@@ -133,32 +109,33 @@ export class TwoDViewPage {
      this.clearCanvas();
      if(this.room.getLength() > 0){
        this.drawRoom();
-     };
-     //this.posArray.push({x: parseInt(this.coordX), y: parseInt(this.coordY), z: parseInt(this.coordZ)});
+     }
+
      var tmpX = 0;
      var tmpY = 0;
+     var tmpZ = 0;
      if(this.calcArray.length>40){
      for(var i = this.calcArray.length-1; i>this.calcArray.length-41;i--){
        tmpX += this.calcArray[i].x;
        tmpY += this.calcArray[i].y;
+       tmpZ += this.calcArray[i].z;
      }
      }
-     this.posArray.push({x:tmpX/40, y:tmpY/40, z:1});
-     if(this.posArray.length>5){
-       this.posArray.shift();
+     this.posArray.addPoint({x:tmpX/40, y:tmpY/40, z:tmpZ/40});
+     if(this.posArray.arrayLength()>5){
+       this.posArray.smaller();
      }
+     this.positionHeight = this.posArray.getObject(this.posArray.getLength-1).z;
      this.drawCurrentPosition();
-     //this.drawPath();
      this.drawInfo();
    }
-
 
    visibleNodes = [];
    infoVisible = false;
 
    checkInfo() {
      for (let i = 0; i < this.info.getLength(); i++) {
-       if(this.info.info[i].x.indexOf(this.posArray[this.posArray.length-1].x) > -1 && this.info.info[i].y.indexOf(this.posArray[this.posArray.length-1].y) > -1 ) {
+       if(this.info.info[i].x.indexOf(this.posArray.getObject(this.posArray.arrayLength()-1).x) > -1 && this.info.info[i].y.indexOf(this.posArray.getObject(this.posArray.arrayLength-1).y) > -1 ) {
          this.infoVisible = true;
          if (this.visibleNodes.indexOf(this.info.info[i]) == -1) {
            this.visibleNodes.push(this.info.info[i]);
@@ -171,14 +148,6 @@ export class TwoDViewPage {
      }
    }
 
-   /**
-     * Detect if HTML5 Canvas is supported and, if so, configure the
-     * canvas element accordingly
-     *
-     * @public
-     * @method initialiseCanvas
-     * @return {none}
-     */
    initialiseCanvas() : void
    {
       if(this._CANVAS.getContext)
@@ -187,13 +156,6 @@ export class TwoDViewPage {
       }
    }
 
-   /**
-     * Create a square using canvas drawing API
-     *
-     * @public
-     * @method drawSquare
-     * @return {none}
-     */
    drawRoom() : void
    {
      this._CONTEXT.beginPath();
@@ -209,13 +171,7 @@ export class TwoDViewPage {
      this._CONTEXT.setLineDash([]);
      this._CONTEXT.stroke();
    }
-   /**
-        * Configure the Canvas element
-        *
-        * @public
-        * @method setupCanvas
-        * @return {none}
-        */
+
       setupCanvas() : void
       {
          this._CONTEXT = this._CANVAS.getContext('2d');
@@ -223,13 +179,6 @@ export class TwoDViewPage {
          this._CONTEXT.fillRect(0, 0, this._CANVAS.width, this._CANVAS.height);
       }
 
-      /**
-        * Reset the Canvas element/clear previous content
-        *
-        * @public
-        * @method clearCanvas
-        * @return {none}
-        */
       clearCanvas() : void
       {
          this._CONTEXT.clearRect(0, 0, this._CANVAS.width, this._CANVAS.height);
@@ -240,13 +189,12 @@ export class TwoDViewPage {
         this.navCtrl.push(CreateRoomPage);
       }
 
-
       drawCurrentPosition() : void
       {
         this._CONTEXT.beginPath();
 
         // x, y, radius, startAngle, endAngle
-        this._CONTEXT.arc(this.posArray[this.posArray.length-1].x, this.posArray[this.posArray.length-1].y, 10, 0, 2 * Math.PI);
+        this._CONTEXT.arc(this.posArray.getObject(this.posArray.arrayLength-1).x, this.posArray.getObject(this.posArray.arrayLength-1).y, 10, 0, 2 * Math.PI);
         this._CONTEXT.lineWidth   = 2;
         this._CONTEXT.strokeStyle = '#ffffff';
         this._CONTEXT.stroke();
@@ -256,29 +204,11 @@ export class TwoDViewPage {
 
         for (let i = 0; i < this.info.getLength(); i++) {
           this._CONTEXT.beginPath();
-          //console.log(this.info.info[i].x[this.info.info[i].x.length/2]);
-          //this._CONTEXT.arc(this.info.info[i].x[this.info.info[i].x.length/2], this.info.info[i].z[this.info.info[i].z.length/2], this.info.info[i].radius, 0, 2 * Math.PI);
           this._CONTEXT.rect(this.info.info[i].x[0], this.info.info[i].y[0], this.info.info[i].x[this.info.info[i].x.length-1]-this.info.info[i].x[0], this.info.info[i].y[this.info.info[i].y.length-1]-this.info.info[i].y[0])
           this._CONTEXT.lineWidth   = 2;
           this._CONTEXT.strokeStyle = '#ffffff';
           this._CONTEXT.stroke();
         }
-      }
-
-      drawPath() : void
-      {
-        this._CONTEXT.beginPath();
-        this._CONTEXT.moveTo(this.posArray[this.posArray.length-1], this.posArray[this.posArray.length-1]);
-        for(var i = this.posArray.length-1; i>=this.posArray.length-31; i--)
-        {
-          if(i>=0){
-            this._CONTEXT.lineTo(this.posArray[i].x, this.posArray[i].y);
-          }
-        }
-        this._CONTEXT.lineWidth = 3;
-        this._CONTEXT.strokeStyle = '#00ff7f';
-        this._CONTEXT.setLineDash([25, 5]);
-        this._CONTEXT.stroke();
       }
 
       showInfo() {

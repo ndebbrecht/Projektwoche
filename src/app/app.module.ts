@@ -12,6 +12,7 @@ import { RoomProvider } from '../providers/room/room';
 import { InfoNodeProvider } from '../providers/info-node/info-node';
 import { CreateInfoPage } from '../pages/create-info/create-info';
 import { InfoModalPage } from '../pages/info-modal/info-modal';
+import { PosArrayProvider } from '../providers/pos-array/pos-array';
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import { InfoModalPage } from '../pages/info-modal/info-modal';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     RoomProvider,
-    InfoNodeProvider
+    InfoNodeProvider,
+    PosArrayProvider
   ]
 })
 export class AppModule {}
