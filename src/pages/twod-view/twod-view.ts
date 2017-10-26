@@ -39,7 +39,7 @@ export class TwoDViewPage {
    calcArray : [{x: number, y:number, z:number}];
 
    padding = 50;
-   zoom = 10;
+   zoom = 30;
    positionHeight : number;
 
    constructor(public modalCtrl: ModalController, public platform: Platform, public navCtrl: NavController, public room: RoomProvider, public info: InfoNodeProvider, public posArray: PosArrayProvider)
@@ -52,7 +52,7 @@ export class TwoDViewPage {
      })
 
 
-     const client  = connect('mqtt://192.168.32.51:1884');
+     const client  = connect('mqtt://172.24.1.1:1884');
      client.on('connect', function(){
        console.log("verbunden");
        client.subscribe('outTopic');
@@ -61,8 +61,8 @@ export class TwoDViewPage {
      client.on('message', (topic, message) => {
        var allCoords = message.toString();
        var coords = allCoords.split(",");
-       this.coordX = ((parseInt(coords[0])/this.zoom)+this.padding);
-       this.coordY = ((parseInt(coords[1])/this.zoom)+this.padding);
+       this.coordY = ((parseInt(coords[0])/this.zoom)+this.padding);
+       this.coordX = ((parseInt(coords[1])/this.zoom)+this.padding);
        this.coordZ = parseInt(coords[2]);
        if(
          this.coordX>this.padding &&
@@ -82,13 +82,13 @@ export class TwoDViewPage {
        }
        this.drawCurrentPosition();
 
-       var filterString = "";
+      /* var filterString = "";
        var tmp = filterString.concat(((coords[0])).toString(), ",", ((coords[1])).toString(), ",", ((coords[2])).toString());
-       client.publish('filterTopic', tmp);
+       client.publish('filterTopic', tmp);*/
      })
-     this.room.addNewCorner((/*15750*/4500/this.zoom)+this.padding, (/*328*/851/this.zoom)+this.padding, 1);
-     this.room.addNewCorner((/*15750*/4500/this.zoom)+this.padding, (/*10950*/6267/this.zoom)+this.padding, 1);
-     this.room.addNewCorner(this.padding, (/*10950*/6267/this.zoom)+this.padding, 1);
+     this.room.addNewCorner((15750/*4500*//this.zoom)+this.padding, /*851*/(3290/this.zoom)+this.padding, 1);
+     this.room.addNewCorner((15750/*4500*//this.zoom)+this.padding, (10950/*6267*//this.zoom)+this.padding, 1);
+     this.room.addNewCorner(this.padding, (10950/*6267*//this.zoom)+this.padding, 1);
      this.room.addNewCorner(this.padding, this.padding, 1);
    }
 
@@ -192,7 +192,7 @@ export class TwoDViewPage {
         this._CONTEXT.beginPath();
 
         // x, y, radius, startAngle, endAngle
-        this._CONTEXT.arc(this.posArray.getObject(this.posArray.arrayLength()-1).x, this.posArray.getObject(this.posArray.arrayLength()-1).y, this.positionHeight/50, 0, 2 * Math.PI);
+        this._CONTEXT.arc(this.posArray.getObject(this.posArray.arrayLength()-1).x, this.posArray.getObject(this.posArray.arrayLength()-1).y, 10, 0, 2 * Math.PI);
         this._CONTEXT.lineWidth   = 2;
         this._CONTEXT.strokeStyle = '#ffffff';
         this._CONTEXT.stroke();
