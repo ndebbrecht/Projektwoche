@@ -97,8 +97,8 @@ export class TwoDViewPage {
              tmpX += this.posArray[i].x;
              tmpY += this.posArray[i].y;
            }
-           avgX = tmpX/5;
-           avgY = tmpY/5;
+           avgX = tmpX/10;
+           avgY = tmpY/10;
            if(
              this.coordX<avgY*1.4 &&
              this.coordX>avgY*0.6 &&
