@@ -130,7 +130,7 @@ export class TwoDViewPage {
 
    checkInfo() {
      for (let i = 0; i < this.info.getLength(); i++) {
-       if(this.info.info[i].x.indexOf(this.posArray.getObject(this.posArray.arrayLength()-1).x) > -1 && this.info.info[i].y.indexOf(this.posArray.getObject(this.posArray.arrayLength-1).y) > -1 ) {
+       if(this.info.info[i].x.indexOf(this.posArray.getObject(this.posArray.arrayLength()-1).x) > -1 && this.info.info[i].y.indexOf(this.posArray.getObject(this.posArray.arrayLength()-1).y) > -1 ) {
          this.infoVisible = true;
          if (this.visibleNodes.indexOf(this.info.info[i]) == -1) {
            this.visibleNodes.push(this.info.info[i]);
@@ -189,7 +189,7 @@ export class TwoDViewPage {
         this._CONTEXT.beginPath();
 
         // x, y, radius, startAngle, endAngle
-        this._CONTEXT.arc(this.posArray.getObject(this.posArray.arrayLength-1).x, this.posArray.getObject(this.posArray.arrayLength-1).y, 10, 0, 2 * Math.PI);
+        this._CONTEXT.arc(this.posArray.getObject(this.posArray.arrayLength()-1).x, this.posArray.getObject(this.posArray.arrayLength()-1).y, 10, 0, 2 * Math.PI);
         this._CONTEXT.lineWidth   = 2;
         this._CONTEXT.strokeStyle = '#ffffff';
         this._CONTEXT.stroke();

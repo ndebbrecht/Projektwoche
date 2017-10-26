@@ -14,7 +14,7 @@ export class PosArrayProvider {
   constructor(public http: Http) {
   }
 
-  positions : [];
+  positions : [{x:number,y:number,z:number}];
 
   getObject(index){
     return this.positions[index];
