@@ -90,7 +90,7 @@ export class TwoDViewPage {
      this.room.addNewCorner(this.padding, this.padding, 1);
 
      var filterString = "";
-     client.publish('filterTopic', filterString.concat(((coords[0])/this.zoom), ",", ((coords[1])/this.zoom), ",", ((coords[2])/this.zoom)));
+     client.publish('filterTopic', filterString.concat(((coords[0])/this.zoom).toString(), ",", ((coords[1])/this.zoom).toString(), ",", ((coords[2])/this.zoom).toString()));
    }
 
    ionViewDidLoad() : void
