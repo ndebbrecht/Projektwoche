@@ -192,7 +192,7 @@ export class TwoDViewPage {
         this._CONTEXT.beginPath();
 
         // x, y, radius, startAngle, endAngle
-        this._CONTEXT.arc(this.posArray.getObject(this.posArray.arrayLength()-1).x, this.posArray.getObject(this.posArray.arrayLength()-1).y, 10, 0, 2 * Math.PI);
+        this._CONTEXT.arc(this.posArray.getObject(this.posArray.arrayLength()-1).x, this.posArray.getObject(this.posArray.arrayLength()-1).y, this.positionHeight/50, 0, 2 * Math.PI);
         this._CONTEXT.lineWidth   = 2;
         this._CONTEXT.strokeStyle = '#ffffff';
         this._CONTEXT.stroke();
