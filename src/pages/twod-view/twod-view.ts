@@ -47,13 +47,15 @@ export class TwoDViewPage {
    height = 0;
    width = 0;
    posArray : [{x: number, y:number, z:number}];
+   calcArray : [{x: number, y:number, z:number}];
 
    padding = 50;
-   zoom = 30;
+   zoom = 10;
 
    constructor(public platform: Platform, public navCtrl: NavController, public room: RoomProvider)
    {
      this.posArray = [{x:this.padding,y:this.padding,z:0}];
+     this.calcArray = [{x:this.padding,y:this.padding,z:0}]
      platform.ready().then((readySource) => {
        this._CANVAS = this.canvasEl.nativeElement;
        this._CANVAS.width  	= platform.width();
@@ -70,8 +72,8 @@ export class TwoDViewPage {
      client.on('message', (topic, message) => {
        var allCoords = message.toString();
        var coords = allCoords.split(",");
-       this.coordY = ((parseInt(coords[0])/this.zoom)+this.padding);
-       this.coordX = ((parseInt(coords[1])/this.zoom)+this.padding);
+       this.coordX = ((parseInt(coords[0])/this.zoom)+this.padding);
+       this.coordY = ((parseInt(coords[1])/this.zoom)+this.padding);
        this.coordZ = (parseInt(coords[2])/this.zoom);
        if(
          this.coordX>this.padding &&
@@ -80,50 +82,20 @@ export class TwoDViewPage {
          this.coordY<(this.padding+(15750/this.zoom))
        )
        {
-         if(this.posArray.length<101)
-         {
-           this.posArray.push({
-             x: this.coordX,
-             y: this.coordY,
-             z: this.coordZ
-           });
-         } else
-         {
-           var avgX = 0;
-           var avgY = 0;
-           var tmpX = 0;
-           var tmpY = 0;
-           for(var i = this.posArray.length-1; i>this.posArray.length-101; i--){
-             tmpX += this.posArray[i].x;
-             tmpY += this.posArray[i].y;
-           }
-           avgX = tmpX/100;
-           avgY = tmpY/100;
-           if(
-             this.coordX<avgY*1.1 &&
-             this.coordX>avgY*0.9 &&
-             this.coordY<avgX*1.1 &&
-             this.coordY>avgX*0.9
-           )
-           {
-             this.posArray.push({
-               x: this.coordX,
-               y: this.coordY,
-               z: this.coordZ
-             });
-           } else {
-             this.posArray.push({x:avgX,y:avgY,z:1});
-           }
-         }
+          this.calcArray.push({
+            x: this.coordX,
+            y: this.coordY,
+            z: this.coordZ
+          });
        }
-       if(this.posArray.length>1000){
-         this.posArray.shift();
+       if(this.calcArray.length>100){
+         this.calcArray.shift();
        }
-
+       this.drawCurrentPosition();
      })
-     this.room.addNewCorner((15750/this.zoom)+this.padding, (328/this.zoom)+this.padding, 1);
-     this.room.addNewCorner((15750/this.zoom)+this.padding, (10950/this.zoom)+this.padding, 1);
-     this.room.addNewCorner(this.padding, (10950/this.zoom)+this.padding, 1);
+     this.room.addNewCorner((/*15750*/4500/this.zoom)+this.padding, (/*328*/851/this.zoom)+this.padding, 1);
+     this.room.addNewCorner((/*15750*/4500/this.zoom)+this.padding, (/*10950*/6267/this.zoom)+this.padding, 1);
+     this.room.addNewCorner(this.padding, (/*10950*/6267/this.zoom)+this.padding, 1);
      this.room.addNewCorner(this.padding, this.padding, 1);
    }
 
@@ -153,9 +125,20 @@ export class TwoDViewPage {
        this.drawRoom();
      };
      //this.posArray.push({x: parseInt(this.coordX), y: parseInt(this.coordY), z: parseInt(this.coordZ)});
-
+     var tmpX = 0;
+     var tmpY = 0;
+     if(this.calcArray.length>40){
+     for(var i = this.calcArray.length-1; i>this.calcArray.length-41;i--){
+       tmpX += this.calcArray[i].x;
+       tmpY += this.calcArray[i].y;
+     }
+     }
+     this.posArray.push({x:tmpX/40, y:tmpY/40, z:1});
+     if(this.posArray.length>5){
+       this.posArray.shift();
+     }
      this.drawCurrentPosition();
-     this.drawPath();
+     //this.drawPath();
    }
 
    /**
@@ -234,7 +217,7 @@ export class TwoDViewPage {
         this._CONTEXT.beginPath();
 
         // x, y, radius, startAngle, endAngle
-        this._CONTEXT.arc(this.posArray[this.posArray.length-1], this.posArray[this.posArray.length-1], 5, 0, 2 * Math.PI);
+        this._CONTEXT.arc(this.posArray[this.posArray.length-1].x, this.posArray[this.posArray.length-1].y, 10, 0, 2 * Math.PI);
         this._CONTEXT.lineWidth   = 2;
         this._CONTEXT.strokeStyle = '#ffffff';
         this._CONTEXT.stroke();
