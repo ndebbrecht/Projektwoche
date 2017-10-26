@@ -50,23 +50,24 @@ export class TwoDViewPage {
      })
 
 
-     const client  = connect('mqtt://192.168.32.226:1884');
+     const client  = connect('mqtt://192.168.32.51:1884');
      client.on('connect', function(){
        console.log("verbunden");
-       client.subscribe('inTopic');
+       client.subscribe('outTopic');
      })
 
      client.on('message', (topic, message) => {
        var allCoords = message.toString();
        var coords = allCoords.split(",");
-       this.coordX = parseInt(coords[0]);
-       this.coordY = parseInt(coords[1]);
-       this.coordZ = parseInt(coords[2]);
+       this.coordX = (parseInt(coords[0])/30)+(platform.height());
+       this.coordY = (parseInt(coords[1])/30)+(platform.width());
+       this.coordZ = (parseInt(coords[2])/30);
        this.posArray.push({
          x: this.coordX,
          y: this.coordY,
          z: this.coordZ
        });
+       console.log(this.posArray);
      })
    }
 
@@ -86,7 +87,7 @@ export class TwoDViewPage {
       this._CANVAS.height 	= this.height;*/
 
       this.initialiseCanvas();
-      setInterval(() => this.renderAll(),200);
+      setInterval(() => this.renderAll(),20);
 
    }
 
