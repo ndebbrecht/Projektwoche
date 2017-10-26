@@ -125,7 +125,7 @@ export class TwoDViewPage {
      if(this.posArray.arrayLength()>5){
        this.posArray.smaller();
      }
-     this.positionHeight = this.posArray.getObject(this.posArray.getLength-1).z;
+     this.positionHeight = this.posArray.getObject(this.posArray.arrayLength()-1).z;
      this.drawCurrentPosition();
      this.drawInfo();
    }
