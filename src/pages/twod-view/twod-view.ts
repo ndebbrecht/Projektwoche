@@ -194,7 +194,14 @@ export class TwoDViewPage {
         this._CONTEXT.beginPath();
 
         // x, y, radius, startAngle, endAngle
-        this._CONTEXT.arc(this.posArray.getObject(this.posArray.arrayLength()-1).x, this.posArray.getObject(this.posArray.arrayLength()-1).y, 10*((this.posArray.getObject(this.posArray.arrayLength()-1).z)/*1000*//1500), 0, 2 * Math.PI);
+        var hMod = 1;
+        if((this.posArray.getObject(this.posArray.arrayLength()-1).z)<750) {
+          hMod = 0.5;
+        }
+        else {
+          hMod = (this.posArray.getObject(this.posArray.arrayLength()-1).z)/1500;
+        }
+        this._CONTEXT.arc(this.posArray.getObject(this.posArray.arrayLength()-1).x, this.posArray.getObject(this.posArray.arrayLength()-1).y, 10*(hMod), 0, 2 * Math.PI);
         //this._CONTEXT.arc(this.posArray.getObject(this.posArray.arrayLength()-1).x, this.posArray.getObject(this.posArray.arrayLength()-1).y, this.positionHeight/50, 0, 2 * Math.PI);
         this._CONTEXT.lineWidth   = 2;
         this._CONTEXT.strokeStyle = '#ffffff';
