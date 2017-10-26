@@ -15,4 +15,10 @@
     </button>
   </ion-fab>
 
+  <ion-fab *ngIf="visibleNodes.length > 0" class="button3" left bottom>
+    <button ion-fab (click)="showInfo()">
+      <ion-icon class="icon-name">i</ion-icon>
+    </button>
+  </ion-fab>
+
 </ion-content>

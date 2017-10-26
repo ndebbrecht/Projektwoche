@@ -1,0 +1,37 @@
+<!--
+  Generated template for the CreateInfoPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Infopunkt hinzufügen</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <br>
+
+  <ion-item>
+    <ion-label color="primary" floating>Titel</ion-label>
+      <ion-input [(ngModel)]="title"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label color="primary" floating>Beschreibung</ion-label>
+      <ion-input [(ngModel)]="desc"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label color="primary" floating>Radius des Punktes</ion-label>
+      <ion-input [(ngModel)]="radius" type="number"></ion-input>
+  </ion-item>
+
+  <br>
+  <button ion-button (click)="addNode()">bestätigen</button>
+
+</ion-content>

@@ -2,9 +2,11 @@ import { Component,
          ElementRef,
          Input,
          ViewChild } from '@angular/core';
-import { NavController, Platform } from 'ionic-angular';
+import { ModalController, NavController, Platform } from 'ionic-angular';
 import { CreateRoomPage } from '../../pages/create-room/create-room';
 import { RoomProvider } from '../../providers/room/room';
+import { InfoNodeProvider } from '../../providers/info-node/info-node';
+import { InfoModalPage } from '../../pages/info-modal/info-modal';
 import { connect } from 'mqtt';
 
 @Component({
@@ -52,7 +54,7 @@ export class TwoDViewPage {
    padding = 50;
    zoom = 10;
 
-   constructor(public platform: Platform, public navCtrl: NavController, public room: RoomProvider)
+   constructor(public modalCtrl: ModalController, public platform: Platform, public navCtrl: NavController, public room: RoomProvider, public info: InfoNodeProvider)
    {
      this.posArray = [{x:this.padding,y:this.padding,z:0}];
      this.calcArray = [{x:this.padding,y:this.padding,z:0}]
@@ -116,6 +118,9 @@ export class TwoDViewPage {
 
       this.initialiseCanvas();
       setInterval(() => this.renderAll(),20);
+      setInterval(() => this.checkInfo(),200);
+      this.info.addInfoNode(50,50,50,30,"tgik","jdslk");  //Test, kann weg
+      this.info.addInfoNode(160,160,160,60,"tgsik","jsdslk");  //Test, kann weg
 
    }
 
@@ -139,6 +144,26 @@ export class TwoDViewPage {
      }
      this.drawCurrentPosition();
      //this.drawPath();
+     this.drawInfo();
+   }
+
+
+   visibleNodes = [];
+   infoVisible = false;
+
+   checkInfo() {
+     for (let i = 0; i < this.info.getLength(); i++) {
+       if(this.info.info[i].x.indexOf(this.posArray[this.posArray.length-1].x) > -1 && this.info.info[i].y.indexOf(this.posArray[this.posArray.length-1].y) > -1 ) {
+         this.infoVisible = true;
+         if (this.visibleNodes.indexOf(this.info.info[i]) == -1) {
+           this.visibleNodes.push(this.info.info[i]);
+         }
+       }
+       else {
+         this.infoVisible = false;
+         this.visibleNodes = [];
+       }
+     }
    }
 
    /**
@@ -156,7 +181,6 @@ export class TwoDViewPage {
          this.setupCanvas();
       }
    }
-
 
    /**
      * Create a square using canvas drawing API
@@ -223,6 +247,19 @@ export class TwoDViewPage {
         this._CONTEXT.stroke();
       }
 
+      drawInfo() {
+
+        for (let i = 0; i < this.info.getLength(); i++) {
+          this._CONTEXT.beginPath();
+          //console.log(this.info.info[i].x[this.info.info[i].x.length/2]);
+          //this._CONTEXT.arc(this.info.info[i].x[this.info.info[i].x.length/2], this.info.info[i].z[this.info.info[i].z.length/2], this.info.info[i].radius, 0, 2 * Math.PI);
+          this._CONTEXT.rect(this.info.info[i].x[0], this.info.info[i].y[0], this.info.info[i].x[this.info.info[i].x.length-1]-this.info.info[i].x[0], this.info.info[i].y[this.info.info[i].y.length-1]-this.info.info[i].y[0])
+          this._CONTEXT.lineWidth   = 2;
+          this._CONTEXT.strokeStyle = '#ffffff';
+          this._CONTEXT.stroke();
+        }
+      }
+
       drawPath() : void
       {
         this._CONTEXT.beginPath();
@@ -237,6 +274,11 @@ export class TwoDViewPage {
         this._CONTEXT.strokeStyle = '#00ff7f';
         this._CONTEXT.setLineDash([25, 5]);
         this._CONTEXT.stroke();
+      }
+
+      showInfo() {
+        const profileModal = this.modalCtrl.create(InfoModalPage, { infoNodes: this.visibleNodes });
+        profileModal.present();
       }
 
    }

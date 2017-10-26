@@ -9,6 +9,9 @@ import { HomePage } from '../pages/home/home';
 import { TwoDViewPage } from '../pages/twod-view/twod-view';
 import { CreateRoomPage } from '../pages/create-room/create-room';
 import { RoomProvider } from '../providers/room/room';
+import { InfoNodeProvider } from '../providers/info-node/info-node';
+import { CreateInfoPage } from '../pages/create-info/create-info';
+import { InfoModalPage } from '../pages/info-modal/info-modal';
 
 
 @NgModule({
@@ -16,7 +19,9 @@ import { RoomProvider } from '../providers/room/room';
     MyApp,
     HomePage,
     TwoDViewPage,
-    CreateRoomPage
+    CreateRoomPage,
+    CreateInfoPage,
+    InfoModalPage
   ],
   imports: [
     BrowserModule,
@@ -27,13 +32,16 @@ import { RoomProvider } from '../providers/room/room';
     MyApp,
     HomePage,
     TwoDViewPage,
-    CreateRoomPage
+    CreateRoomPage,
+    CreateInfoPage,
+    InfoModalPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    RoomProvider
+    RoomProvider,
+    InfoNodeProvider
   ]
 })
 export class AppModule {}
