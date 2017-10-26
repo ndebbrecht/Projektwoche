@@ -58,11 +58,9 @@ export class TwoDViewPage {
        client.subscribe('outTopic');
      })
 
-     var coords = []
-
      client.on('message', (topic, message) => {
        var allCoords = message.toString();
-       coords = allCoords.split(",");
+       var coords = allCoords.split(",");
        this.coordX = ((parseInt(coords[0])/this.zoom)+this.padding);
        this.coordY = ((parseInt(coords[1])/this.zoom)+this.padding);
        this.coordZ = parseInt(coords[2]);
@@ -83,14 +81,15 @@ export class TwoDViewPage {
          this.calcArray.shift();
        }
        this.drawCurrentPosition();
+
+       var filterString = "";
+       var tmp = filterString.concat(((coords[0])).toString(), ",", ((coords[1])).toString(), ",", ((coords[2])).toString());
+       client.publish('filterTopic', tmp);
      })
      this.room.addNewCorner((/*15750*/4500/this.zoom)+this.padding, (/*328*/851/this.zoom)+this.padding, 1);
      this.room.addNewCorner((/*15750*/4500/this.zoom)+this.padding, (/*10950*/6267/this.zoom)+this.padding, 1);
      this.room.addNewCorner(this.padding, (/*10950*/6267/this.zoom)+this.padding, 1);
      this.room.addNewCorner(this.padding, this.padding, 1);
-
-     var filterString = "";
-     client.publish('filterTopic', filterString.concat(((coords[0])/this.zoom).toString(), ",", ((coords[1])/this.zoom).toString(), ",", ((coords[2])/this.zoom).toString()));
    }
 
    ionViewDidLoad() : void
@@ -99,7 +98,7 @@ export class TwoDViewPage {
 
       this.initialiseCanvas();
       setInterval(() => this.renderAll(),20);
-      setInterval(() => this.checkInfo(),200);
+      setInterval(() => this.checkInfo(),20);
 
    }
 
@@ -144,6 +143,7 @@ export class TwoDViewPage {
          this.visibleNodes = [];
        }
      }
+     console.log(this.visibleNodes);
    }
 
    initialiseCanvas() : void
