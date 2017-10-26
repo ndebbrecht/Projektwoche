@@ -5,6 +5,7 @@ import { Component,
 import { ModalController, NavController, Platform } from 'ionic-angular';
 import { CreateRoomPage } from '../../pages/create-room/create-room';
 import { RoomProvider } from '../../providers/room/room';
+import { PosArrayProvider } from '../../provider/pos-array/pos-array';
 import { InfoNodeProvider } from '../../providers/info-node/info-node';
 import { InfoModalPage } from '../../pages/info-modal/info-modal';
 import { connect } from 'mqtt';
@@ -48,15 +49,13 @@ export class TwoDViewPage {
    coordZ: number;
    height = 0;
    width = 0;
-   posArray : [{x: number, y:number, z:number}];
    calcArray : [{x: number, y:number, z:number}];
 
    padding = 50;
    zoom = 10;
 
-   constructor(public modalCtrl: ModalController, public platform: Platform, public navCtrl: NavController, public room: RoomProvider, public info: InfoNodeProvider)
+   constructor(public modalCtrl: ModalController, public platform: Platform, public navCtrl: NavController, public room: RoomProvider, public info: InfoNodeProvider, public posArray: PosArrayProvider)
    {
-     this.posArray = [{x:this.padding,y:this.padding,z:0}];
      this.calcArray = [{x:this.padding,y:this.padding,z:0}]
      platform.ready().then((readySource) => {
        this._CANVAS = this.canvasEl.nativeElement;
@@ -138,9 +137,9 @@ export class TwoDViewPage {
        tmpY += this.calcArray[i].y;
      }
      }
-     this.posArray.push({x:tmpX/40, y:tmpY/40, z:1});
-     if(this.posArray.length>5){
-       this.posArray.shift();
+     this.posArray.addPoint({x:tmpX/40, y:tmpY/40, z:1});
+     if(this.posArray.arrayLength()>5){
+       this.posArray.smaller();
      }
      this.drawCurrentPosition();
      //this.drawPath();
@@ -153,7 +152,7 @@ export class TwoDViewPage {
 
    checkInfo() {
      for (let i = 0; i < this.info.getLength(); i++) {
-       if(this.info.info[i].x.indexOf(this.posArray[this.posArray.length-1].x) > -1 && this.info.info[i].y.indexOf(this.posArray[this.posArray.length-1].y) > -1 ) {
+       if(this.info.info[i].x.indexOf(this.posArray.getObject(this.posArray.arrayLength()-1).x) > -1 && this.info.info[i].y.indexOf(this.posArray.getObject(this.posArray.arrayLength-1).y) > -1 ) {
          this.infoVisible = true;
          if (this.visibleNodes.indexOf(this.info.info[i]) == -1) {
            this.visibleNodes.push(this.info.info[i]);
@@ -241,7 +240,7 @@ export class TwoDViewPage {
         this._CONTEXT.beginPath();
 
         // x, y, radius, startAngle, endAngle
-        this._CONTEXT.arc(this.posArray[this.posArray.length-1].x, this.posArray[this.posArray.length-1].y, 10, 0, 2 * Math.PI);
+        this._CONTEXT.arc(this.posArray.getObject(this.posArray.arrayLength-1).x, this.posArray.getObject(this.posArray.arrayLength-1).y, 10, 0, 2 * Math.PI);
         this._CONTEXT.lineWidth   = 2;
         this._CONTEXT.strokeStyle = '#ffffff';
         this._CONTEXT.stroke();
@@ -260,7 +259,7 @@ export class TwoDViewPage {
         }
       }
 
-      drawPath() : void
+      /*drawPath() : void
       {
         this._CONTEXT.beginPath();
         this._CONTEXT.moveTo(this.posArray[this.posArray.length-1], this.posArray[this.posArray.length-1]);
@@ -274,7 +273,7 @@ export class TwoDViewPage {
         this._CONTEXT.strokeStyle = '#00ff7f';
         this._CONTEXT.setLineDash([25, 5]);
         this._CONTEXT.stroke();
-      }
+      }*/
 
       showInfo() {
         const profileModal = this.modalCtrl.create(InfoModalPage, { infoNodes: this.visibleNodes });
