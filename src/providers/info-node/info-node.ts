@@ -21,6 +21,7 @@ class Node {
 export class InfoNodeProvider {
 
   info: [{
+    id: number,
     x: number[],
     y: number[],
     z: number[],

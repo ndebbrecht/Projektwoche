@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 
 /*
@@ -11,7 +10,7 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class PosArrayProvider {
 
-  constructor(public http: Http) {
+  constructor() {
   }
 
   positions : [{x:number,y:number,z:number}];
