@@ -4,18 +4,18 @@
       <canvas #canvas></canvas>
   </div>
 
-  <ion-fab class="button1" right bottom>
+  <!--<ion-fab class="button1" right bottom>
     <button ion-fab>
       <ion-icon class="icon-name">3D</ion-icon>
     </button>
-  </ion-fab>
+  </ion-fab>-->
   <ion-fab class="button2" right bottom>
     <button ion-fab (click)="switchToCreateRoom()">
       <ion-icon name="settings"></ion-icon>
     </button>
   </ion-fab>
 
-  <ion-fab *ngIf="visibleNodes.length > 0" class="button3" left bottom>
+  <ion-fab *ngIf="visibleNodes.length > 0" class="button2" left bottom>
     <button ion-fab (click)="showInfo()">
       <ion-icon class="icon-name">i</ion-icon>
     </button>

@@ -81,6 +81,7 @@ export class TwoDViewPage {
          this.calcArray.shift();
        }
        this.drawCurrentPosition();
+
        if(coords.length==3 && !this.platform.is("android")){
          var filterString = "";
          var tmp = filterString.concat(((coords[0])).toString(), ",", ((coords[1])).toString(), ",", ((coords[2])).toString());
@@ -205,7 +206,8 @@ export class TwoDViewPage {
           this._CONTEXT.beginPath();
           this._CONTEXT.rect(this.info.info[i].x[0], this.info.info[i].y[0], this.info.info[i].x[this.info.info[i].x.length-1]-this.info.info[i].x[0], this.info.info[i].y[this.info.info[i].y.length-1]-this.info.info[i].y[0])
           this._CONTEXT.lineWidth   = 2;
-          this._CONTEXT.strokeStyle = '#ffffff';
+          this._CONTEXT.strokeStyle = '#1E90FF';
+          this._CONTEXT.setLineDash([5]);
           this._CONTEXT.stroke();
         }
       }
