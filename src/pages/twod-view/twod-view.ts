@@ -81,10 +81,11 @@ export class TwoDViewPage {
          this.calcArray.shift();
        }
        this.drawCurrentPosition();
-
-      /* var filterString = "";
-       var tmp = filterString.concat(((coords[0])).toString(), ",", ((coords[1])).toString(), ",", ((coords[2])).toString());
-       client.publish('filterTopic', tmp);*/
+       if(coords.length==3 && !this.platform.is("android")){
+         var filterString = "";
+         var tmp = filterString.concat(((coords[0])).toString(), ",", ((coords[1])).toString(), ",", ((coords[2])).toString());
+         client.publish('filterTopic', tmp);
+       }
      })
      this.room.addNewCorner((15750/*4500*//this.zoom)+this.padding, /*851*/(3290/this.zoom)+this.padding, 1);
      this.room.addNewCorner((15750/*4500*//this.zoom)+this.padding, (10950/*6267*//this.zoom)+this.padding, 1);
